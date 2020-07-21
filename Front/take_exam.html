@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<style> 
+	form{  
+		width:70%;  
+		margin: auto;  
+		padding: 30px;  
+		text-align: center;
+		border:2px solid #C0C0C0;  
+		border-radius: 50px;  
+		background-color: #E0E0E0; 
+	}
+	
+	.init{ 
+		display: none; 
+	}
+	
+	textarea{ 
+		width: auto; 
+	}
+</style>
+
+<form id='myform' action="student_answers.php" method="post">
+	<h1>Online Examination</h1> 
+	<br> <input type=button id="start" value="Start Exam"> <br><br>
+	
+	<div class="init" id="Qs" align="center"></div><br><br>
+	
+	<center><input class="init" type=submit id="submit" value="Submit Test"> 
+	<input type=button id="btnH" value="Return to home page"> <br><br></center>
+</form>
+
+<script>
+	var ptrStart = document.getElementById("start");
+		ptrStart.addEventListener("click", start_test);
+	var ptrSubmit = document.getElementById("submit");	
+	var ptrQuestions = document.getElementById("Qs");
+	var ptrH = document.getElementById("btnH");		
+		ptrH.addEventListener("click", home);
+		
+	var ptrTA = document.getElementById("myform");
+		ptrTA.addEventListener("keydown",keypress);
+		ptrTA.addEventListener("focusout",clickedoff);
+				
+	function keypress(){
+	
+		var event = window.event;
+		var key = event.keyCode;
+		
+		//tab
+		if (key === 9){		
+			event.preventDefault();
+			var id = event.target.id;
+			var ptr = document.getElementById(id);
+			ptr.value = ptr.value + "\t";
+		}
+		
+		//enter
+		if (key === 13){
+			event.preventDefault();
+			var id = event.target.id;
+			var ptr = document.getElementById(id);
+			ptr.value = ptr.value + "\n";
+		}
+	}
+
+
+	var ptrS = document.getElementById("submit");
+		ptrS.addEventListener("click",onsub);
+
+	var ids = [];
+	function clickedoff()
+	{
+		var event = window.event;
+		var id = event.target.id;
+		if(id != "myform" && id != "start" && id != "submit")
+		{
+			if(!(ids.includes(id)))
+			{
+				ids.push(id);
+			}
+		}
+		
+	}
+	
+	function onsub()
+	{
+		var len = ids.length;
+		var i=0;
+		for(i=0; i < len; i++)
+		{
+			var ii = ids[i];
+			
+			var ptrii = document.getElementById(ii);
+			var val = ptrii.value;		
+			var newval = JSON.stringify(val);
+			ptrii.value = newval;
+		}	
+	}
+	
+	
+	function start_test() 
+	{
+		ptrH.style.display = "none";
+		ptrStart.style.display = "none"; 
+		ptrQuestions.style.display = "block";
+		
+		var request = new XMLHttpRequest();
+		request.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				var response = this.responseText;	
+				if(response == "")
+				{
+					document.getElementById("Qs").innerHTML = "Instructor has not released an exam" +
+					" or you have already taken this exam<br>";
+					ptrH.style.display = "block";
+				}
+				else
+				{
+					document.getElementById("Qs").innerHTML = response;		
+					ptrSubmit.style.display = "block";
+				}		
+			}	
+		};
+		request.open("POST", "exam_questions.php", true);
+		request.send();		
+	}
+    
+	function home(){ 
+		//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/student_home.html";
+		window.location.href = "https://web.njit.edu/~mat55/CS490/rc/student_home.html";		
+	}
+</script>

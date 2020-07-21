@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<style> 
+		form {  width:40%;  margin: auto;  padding: 30px;  text-align: center;
+				border:2px solid #C0C0C0;  border-radius: 50px;  background-color: #E0E0E0; }
+</style>
+
+<form>
+	<h1>Welcome Student</h1> 
+	<td align="left"> <br> <input type=button id="btn1" value="Take Exam"> </td>
+	<br><br>
+	<td align="left"> <br> <input type=button id="btn2" value="View Score"> </td>
+	<br><br>
+	<td align="left"> <br> <input type=button id="btn3" value="Logout"> </td>
+	<br><br>
+</form>
+
+<script>
+	var ptrBtn1 = document.getElementById("btn1");
+		ptrBtn1.addEventListener("click", go_to_exam);
+	var ptrBtn2 = document.getElementById("btn2");
+		ptrBtn2.addEventListener("click", go_to_score);
+	var ptrBtn3 = document.getElementById("btn3");
+		ptrBtn3.addEventListener("click", logout);
+	
+	function go_to_exam(){ 
+		//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/take_exam.html"; 
+		window.location.href = "https://web.njit.edu/~tat22/CS490/New/Front/take_exam.html"; 
+	}
+	
+	function go_to_score(){ 
+		//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/view_score.html";
+		window.location.href = "https://web.njit.edu/~tat22/CS490/New/Front/view_score.html";
+	}
+	
+	function logout(){ 
+		//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/login2.html"; 
+		window.location.href = "https://web.njit.edu/~tat22/CS490/New/Front/login.html";
+	}
+</script>

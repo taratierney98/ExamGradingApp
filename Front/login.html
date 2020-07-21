@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<meta charset = "UTF-8">
+
+<style> 
+	body{
+		background-image: url("b2.jpg");
+		background-size: cover;
+	}
+
+	form{
+		position: absolute; 
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+	
+		width:30%;  
+		margin: auto; 
+		text-align: center; 
+		border:2px solid #C0C0C0; 
+		border-radius: 50px; 
+		background-color: #E0E0E0; 
+		padding: 30px;
+	}
+</style>
+
+<form>
+	
+	<h1>University Login</h1> 
+	
+	<table>
+		<tr> 
+			<td align="left">UCID</td> 
+			<td><input type=text id="ucid" autocomplete="off"></td> 
+		</tr>
+		<tr> 
+			<td align="left"> Password </td> 
+			<td> <input type=password id="pass" autocomplete="off"></td> 
+		</tr>
+		<tr>
+			<td align="left"> <br> <input type=button id="btn" value="submit"></td>
+		</tr>
+	</table>
+		
+	<div id="display_response"> </div><br>
+
+</form>
+
+<script>
+
+var ptrUCID = document.getElementById("ucid");
+var ptrPASS = document.getElementById("pass");
+var ptrbutton = document.getElementById("btn");
+	ptrbutton.addEventListener("click", getResponse);
+	
+function getResponse(){
+	var ucid = ptrUCID.value; var pass = ptrPASS.value;
+
+	var request = new XMLHttpRequest();
+	
+	request.onreadystatechange = function(){
+	
+		if (this.readyState == 4 && this.status == 200){
+		
+			var response = this.responseText; 	
+			
+			resp = JSON.parse(response);
+			var log = resp.login;
+			
+			if(log == "S"){ 
+				//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/student_home.html";
+				window.location.href = "https://web.njit.edu/~tat22/CS490/New/Front/student_home.html"; 
+				
+			}
+			else{
+				if(log == "T"){ 
+					//window.location.href = "https://web.njit.edu/~mat55/CS490/rc/teacher_home.html"; 
+					window.location.href = "https://web.njit.edu/~tat22/CS490/New/Front/teacher_home.html"; 
+				}
+				else{ 
+					document.getElementById("display_response").innerHTML = "Incorrect login";
+				}
+			}	
+			
+		}
+	};
+	request.open("POST", "login.php", true);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	request.send("ucid="+encodeURIComponent(ucid)+"&pass="+encodeURIComponent(pass));
+}
+</script>
